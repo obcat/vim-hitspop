@@ -1,0 +1,36 @@
+*hitspop.txt*  Popup the number of hits.
+
+==============================================================================
+COMMANDS                                                    *hitspop-commands*
+
+*:HitsPopEnable*
+    Turn the hitspop on.
+
+*:HitsPopDisable*
+    Turn the hitspop off.
+
+==============================================================================
+HIGHLIGHTS                                                *hitspop-highlights*
+
+HitsPopPopup (default: links to |hi-Pmenu|)
+
+==============================================================================
+OPTIONS                                                      *hitspop-options*
+
+*g:hitspop_show_search_word* (default: 1)
+    Determines whether or not to show your search word.
+
+*g:hitspop_popup_zindex* (default: 50)
+    Priotiry for the popup. Minumum value is 1, maximum value is 32000.
+
+==============================================================================
+ABOUT                                                          *hitspop-about*
+
+hitspop is developed by obcat and licensed under the MIT License.
+Visit the project page for the latest version:
+
+    https://github.com/obcat/hitspop.vim
+
+
+==============================================================================
+vim:ft=help:norl:ts=4:sw=4:tw=78:
