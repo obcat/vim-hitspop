@@ -1,4 +1,4 @@
-*hitspop.txt*  Popup the number of hits.
+*hitspop.txt*  Popup the number of search results.
 
 ==============================================================================
 COMMANDS                                                    *hitspop-commands*
@@ -9,10 +9,12 @@ COMMANDS                                                    *hitspop-commands*
 *:HitsPopDisable*
     Turn the hitspop off.
 
+
 ==============================================================================
 HIGHLIGHTS                                                *hitspop-highlights*
 
 HitsPopPopup (default: links to |hi-Pmenu|)
+
 
 ==============================================================================
 OPTIONS                                                      *hitspop-options*
@@ -22,6 +24,7 @@ OPTIONS                                                      *hitspop-options*
 
 *g:hitspop_popup_zindex* (default: 50)
     Priotiry for the popup. Minumum value is 1, maximum value is 32000.
+
 
 ==============================================================================
 ABOUT                                                          *hitspop-about*
