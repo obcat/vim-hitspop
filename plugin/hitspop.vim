@@ -5,6 +5,9 @@ if exists('g:loaded_hitspop')
   finish
 endif
 
+if !exists('*searchcount')
+  finish
+endif
 
 augroup hitspop-autocmds | autocmd! | augroup END
 
