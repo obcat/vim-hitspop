@@ -42,7 +42,7 @@ By default, the search word appears in the popup along with the number of search
 let g:hitspop_show_search_word = 0
 ```
 
-See the help file included in this plugin for more information,
+See help file for more information.
 
 ## License
 
