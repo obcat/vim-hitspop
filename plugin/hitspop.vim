@@ -12,6 +12,7 @@ endif
 augroup hitspop-autocmds | autocmd! | augroup END
 
 function! s:autocmd() abort
+  autocmd! hitspop-autocmds
   autocmd hitspop-autocmds CursorHold,CursorMoved,CursorMovedI,WinEnter *
     \ call hitspop#main()
   autocmd hitspop-autocmds WinLeave * call hitspop#clean()
