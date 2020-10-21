@@ -32,7 +32,7 @@ ABOUT                                                          *hitspop-about*
 hitspop is developed by obcat and licensed under the MIT License.
 Visit the project page for the latest version:
 
-    https://github.com/obcat/hitspop.vim
+    https://github.com/obcat/vim-hitspop
 
 
 ==============================================================================
