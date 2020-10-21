@@ -12,15 +12,16 @@ endif
 augroup hitspop-autocmds | autocmd! | augroup END
 
 function! s:autocmd() abort
+  autocmd! hitspop-autocmds
   autocmd hitspop-autocmds CursorHold,CursorMoved,CursorMovedI,WinEnter *
     \ call hitspop#main()
   autocmd hitspop-autocmds WinLeave * call hitspop#clean()
 endfunction
 
-if !exists(':HitsPopEnable')
+if exists(':HitsPopEnable') isnot 2
   command HitsPopEnable call s:autocmd()
 endif
-if !exists(':HitsPopDisable')
+if exists(':HitsPopDisable') isnot 2
   command HitsPopDisable
     \ call hitspop#clean() | autocmd! hitspop-autocmds
 endif
