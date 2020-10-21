@@ -17,10 +17,10 @@ function! s:autocmd() abort
   autocmd hitspop-autocmds WinLeave * call hitspop#clean()
 endfunction
 
-if !exists(':HitsPopEnable')
+if exists(':HitsPopEnable') isnot 2
   command HitsPopEnable call s:autocmd()
 endif
-if !exists(':HitsPopDisable')
+if exists(':HitsPopDisable') isnot 2
   command HitsPopDisable
     \ call hitspop#clean() | autocmd! hitspop-autocmds
 endif
