@@ -5,6 +5,11 @@ set cpo&vim
 let s:show_search_word = get(g:, 'hitspop_show_search_word', 1)
 let s:popup_zindex = get(g:, 'hitspop_popup_zindex', 50)
 
+let s:searchcount_options = #{
+  \ maxcount: 0,
+  \ timeout: 30,
+  \ }
+
 function! s:CreatePopup(line, col) abort
   let w:hitspop_popup_id = popup_create(s:GetContent(), #{
     \ line: a:line,
@@ -25,19 +30,13 @@ function! s:DeletePopupIfExists() abort
 endfunction
 
 function! s:GetContent() abort
-  let l:result = searchcount()
+  let l:result = searchcount(s:searchcount_options)
   if empty(l:result)
     return ''
   endif
   let search_word = s:show_search_word ? @/ . ' ' : ''
   if l:result.incomplete ==# 1
     return printf('%s[?/??]', search_word)
-  elseif l:result.incomplete ==# 2
-    if l:result.total > l:result.maxcount && l:result.current > l:result.maxcount
-      return printf('%s[>%d/>%d]', search_word, l:result.current, l:result.total)
-    elseif l:result.total > l:result.maxcount
-      return printf('%s[%d/>%d]', search_word, l:result.current, l:result.total)
-    endif
   endif
   return printf('%s[%d/%d]', search_word, l:result.current, l:result.total)
 endfunction
