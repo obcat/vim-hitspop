@@ -24,7 +24,7 @@ endfunction
 
 function! s:DeletePopupIfExists() abort
   if s:PopupExists()
-    call popup_clear(w:hitspop_popup_id)
+    call popup_close(w:hitspop_popup_id)
     unlet w:hitspop_popup_id
   endif
 endfunction
