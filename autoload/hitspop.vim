@@ -19,13 +19,13 @@ function! s:CreatePopup(line, col) abort
     \ padding: [0, 1, 0, 1],
     \ highlight: 'HitsPopPopup',
     \ wrap: 0,
+    \ callback: 's:UnletPopupID',
     \ })
 endfunction
 
 function! s:DeletePopupIfExists() abort
   if s:PopupExists()
     call popup_close(w:hitspop_popup_id)
-    unlet w:hitspop_popup_id
   endif
 endfunction
 
@@ -51,6 +51,10 @@ endfunction
 
 function! s:PopupExists() abort
   return exists('w:hitspop_popup_id')
+endfunction
+
+function! s:UnletPopupID(id, result) abort
+  unlet w:hitspop_popup_id
 endfunction
 
 function! s:UpdateContent() abort
