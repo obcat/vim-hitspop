@@ -63,9 +63,8 @@ function! hitspop#main() abort
     return
   endif
 
-  let l:winnr = winnr()
-  let l:popup_line = win_screenpos(l:winnr)[0]
-  let l:popup_col = win_screenpos(l:winnr)[1] + winwidth(l:winnr) - 1
+  let [l:popup_line, l:popup_col] = win_screenpos(0)
+  let l:popup_col += winwidth(0) - 1
 
   if !s:PopupExists()
     call s:CreatePopup(l:popup_line, l:popup_col)
