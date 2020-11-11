@@ -11,7 +11,7 @@ let s:searchcount_options = #{
   \ }
 
 function! s:CreatePopup(line, col) abort
-  let w:hitspop_popup_id = popup_create(s:GetContent(), #{
+  let s:hitspop_popup_id = popup_create(s:GetContent(), #{
     \ line: a:line,
     \ col: a:col,
     \ pos: 'topright',
@@ -25,7 +25,7 @@ endfunction
 
 function! s:DeletePopupIfExists() abort
   if s:PopupExists()
-    call popup_close(w:hitspop_popup_id)
+    call popup_close(s:hitspop_popup_id)
   endif
 endfunction
 
@@ -46,19 +46,19 @@ function! s:HlIsOff() abort
 endfunction
 
 function! s:MovePopup(line, col) abort
-  call popup_move(w:hitspop_popup_id, #{line: a:line, col: a:col})
+  call popup_move(s:hitspop_popup_id, #{line: a:line, col: a:col})
 endfunction
 
 function! s:PopupExists() abort
-  return exists('w:hitspop_popup_id')
+  return exists('s:hitspop_popup_id')
 endfunction
 
 function! s:UnletPopupID(id, result) abort
-  unlet w:hitspop_popup_id
+  unlet s:hitspop_popup_id
 endfunction
 
 function! s:UpdateContent() abort
-  call popup_settext(w:hitspop_popup_id, s:GetContent())
+  call popup_settext(s:hitspop_popup_id, s:GetContent())
 endfunction
 
 function! hitspop#main() abort
