@@ -81,6 +81,9 @@ function! hitspop#main() abort
 endfunction
 
 function! hitspop#clean() abort
+  if win_gettype() ==# 'popup'
+    return
+  endif
   call s:DeletePopupIfExists()
 endfunction
 
