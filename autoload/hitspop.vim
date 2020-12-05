@@ -73,7 +73,8 @@ function! hitspop#main() abort
   if !s:PopupExists()
     call s:CreatePopup(l:popup_line, l:popup_col)
   else
-    if !popup_locate(l:popup_line, l:popup_col)
+    let l:pos = popup_getpos(s:hitspop_popup_id)
+    if [l:popup_line, l:popup_col] != [l:pos.line, l:pos.col]
       call s:MovePopup(l:popup_line, l:popup_col)
     endif
     call s:UpdateContent()
