@@ -36,10 +36,10 @@ nnoremap <silent> <ESC><ESC> :<C-u>nohlsearch<CR>
 
 ## Customization
 
-By default, the search word appears in the popup along with the number of search results, such as `foo [3/7]`. If you want it to be like `[3/7]`, then add this setting to your vimrc:
+By default, the search pattern appears in the popup along with the number of search results, such as `foo [3/7]`. If you want it to be like `[3/7]`, then add this setting to your vimrc:
 
 ```vim
-let g:hitspop_show_search_word = 0
+let g:hitspop_show_search_pattern = 0
 ```
 
 See help file for more information.

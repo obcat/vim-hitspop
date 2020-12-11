@@ -19,8 +19,8 @@ HitsPopPopup (default: links to |hi-Pmenu|)
 ==============================================================================
 OPTIONS                                                      *hitspop-options*
 
-*g:hitspop_show_search_word* (default: 1)
-    Determines whether or not to show your search word.
+*g:hitspop_show_search_pattern* (default: 1)
+    Determines whether or not to show your search pattern in the popup.
 
 *g:hitspop_popup_zindex* (default: 50)
     Priotiry for the popup. Minumum value is 1, maximum value is 32000.

@@ -2,7 +2,7 @@
 " License:    MIT License
 
 
-let s:show_search_word = get(g:, 'hitspop_show_search_word', 1)
+let s:show_search_pattern = get(g:, 'hitspop_show_search_pattern', 1)
 let s:popup_zindex = get(g:, 'hitspop_popup_zindex', 50)
 hi default link HitsPopPopup Pmenu
 
@@ -37,10 +37,10 @@ function! s:get_content() abort
   try
     let result = searchcount(s:searchcount_options)
   catch /.*/
-    " Error: @/ is invalid search word (e.g. \1)
+    " Error: @/ is invalid search pattern (e.g. \1)
   endtry
 
-  let str = s:show_search_word
+  let str = s:show_search_pattern
     \ ? @/ . "\<Space>"
     \ : ''
 
@@ -115,4 +115,10 @@ function! hitspop#clean() abort
     return
   endif
   call s:delete_popup_if_exists()
+endfunction
+
+
+" API function to get popup id
+function! hitspop#getpopupid() abort
+  return get(s:, 'popup_id', '')
 endfunction
