@@ -13,12 +13,12 @@ endif
 function! s:register_autocmds() abort
   augroup hitspop-autocmds
     autocmd!
-    autocmd CursorHold,CursorMoved,CursorMovedI,WinEnter * call hitspop#main()
+    autocmd CursorMoved,CursorMovedI,CursorHold,WinEnter * call hitspop#main()
     autocmd WinLeave * call hitspop#clean()
   augroup END
 endfunction
 
-command! HitsPopEnable  call s:register_autocmds()
+command! HitsPopEnable  call hitspop#main()  | call s:register_autocmds()
 command! HitsPopDisable call hitspop#clean() | autocmd! hitspop-autocmds
 
 call s:register_autocmds()
