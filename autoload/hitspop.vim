@@ -4,6 +4,7 @@
 
 let s:show_search_word = get(g:, 'hitspop_show_search_word', 1)
 let s:popup_zindex = get(g:, 'hitspop_popup_zindex', 50)
+hi default link HitsPopPopup Pmenu
 
 let s:searchcount_options = #{
   \ maxcount: 0,
