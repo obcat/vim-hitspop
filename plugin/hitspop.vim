@@ -18,12 +18,8 @@ function! s:register_autocmds() abort
   augroup END
 endfunction
 
-if exists(':HitsPopEnable') isnot 2
-  command HitsPopEnable call s:register_autocmds()
-endif
-if exists(':HitsPopDisable') isnot 2
-  command HitsPopDisable call hitspop#clean() | autocmd! hitspop-autocmds
-endif
+command! HitsPopEnable  call s:register_autocmds()
+command! HitsPopDisable call hitspop#clean() | autocmd! hitspop-autocmds
 
 call s:register_autocmds()
 hi default link HitsPopPopup Pmenu
