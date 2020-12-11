@@ -1,5 +1,5 @@
-let s:save_cpo = &cpo
-set cpo&vim
+" Maintainer: obcat <obcat@icloud.com>
+" License:    MIT License
 
 
 let s:show_search_word = get(g:, 'hitspop_show_search_word', 1)
@@ -103,7 +103,3 @@ function! hitspop#clean() abort
   endif
   call s:DeletePopupIfExists()
 endfunction
-
-
-let &cpo = s:save_cpo
-unlet s:save_cpo

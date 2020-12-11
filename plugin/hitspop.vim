@@ -1,5 +1,6 @@
-let s:save_cpo = &cpo
-set cpo&vim
+" Maintainer: obcat <obcat@icloud.com>
+" License:    MIT License
+
 
 if exists('g:loaded_hitspop')
   finish
@@ -29,6 +30,3 @@ hi default link HitsPopPopup Pmenu
 
 
 let g:loaded_hitspop = 1
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
