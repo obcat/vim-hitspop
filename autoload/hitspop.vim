@@ -2,25 +2,39 @@
 " License:    MIT License
 
 
+let s:def_pos = #{
+  \ line: 'wintop',
+  \ col: 'winright',
+  \ zindex: 50,
+  \ }
+
 function! s:init() abort "{{{
   let s:show_search_pattern = get(g:, 'hitspop_show_search_pattern', 1)
-  let s:popup_zindex = get(g:, 'hitspop_popup_zindex', 50)
+  let s:popup_position = get(g:, 'hitspop_popup_position', s:def_pos)
   hi default link HitsPopPopup Pmenu
 
+  call s:pos_init(s:popup_position)
   let s:popup_static_options = #{
-    \ zindex: s:popup_zindex,
+    \ zindex: s:popup_position.zindex,
     \ padding: [0, 1, 0, 1],
     \ highlight: 'HitsPopPopup',
     \ callback: 's:unlet_popup_id',
-    \}
+    \ }
   let s:searchcount_options = #{
     \ maxcount: 0,
     \ timeout: 30,
     \ }
 endfunction "}}}
 
-call s:init()
+function! s:pos_init(pos) abort "{{{
+  for key in keys(s:def_pos)
+    if !has_key(a:pos, key)
+      let a:pos[key] = s:def_pos[key]
+    endif
+  endfor
+endfunction "}}}
 
+call s:init()
 
 " This function is called on CursorMoved, CursorMovedI, CursorHold, and WinEnter
 function! hitspop#main() abort "{{{
@@ -126,12 +140,19 @@ endfunction "}}}
 " Return dictionary used to specify popup position
 function! s:get_coord() abort "{{{
   let [line, col] = win_screenpos(0)
-  let col += winwidth(0) - 1
-  return #{
-   \ pos: 'topright',
-   \ line: line,
-   \ col: col,
-   \}
+  if s:popup_position.line == 'wintop'
+    let pos = 'top'
+  elseif s:popup_position.line == 'winbot'
+    let pos = 'bot'
+    let line += winheight(0) - 1
+  endif
+  if s:popup_position.col == 'winleft'
+    let pos .= 'left'
+  elseif s:popup_position.col == 'winright'
+    let pos .= 'right'
+    let col += winwidth(0) - 1
+  endif
+  return #{pos: pos, line: line, col: col}
 endfunction "}}}
 
 
