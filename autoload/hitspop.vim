@@ -34,18 +34,31 @@ endfunction
 
 
 function! s:get_content() abort
-  let result = searchcount(s:searchcount_options)
+  try
+    let result = searchcount(s:searchcount_options)
+  catch /.*/
+    " Error: @/ is invalid search word (e.g. \1)
+  endtry
+
+  let str = s:show_search_word
+    \ ? @/ . "\<Space>"
+    \ : ''
+
+  if !exists('result')
+    return printf('%s[INVALID]', str)
+  endif
+
+  " @/ is empty
   if empty(result)
-    return ''
+    return '[@/==EMPTY]'
   endif
 
-  let search_word = s:show_search_word ? @/ . ' ' : ''
-
-  if result.incomplete ==# 1
-    return printf('%s[?/??]', search_word)
+  " Timed out
+  if result.incomplete
+    return printf('%s[TIMED_OUT]', str)
   endif
 
-  return printf('%s[%d/%d]', search_word, result.current, result.total)
+  return printf('%s[%d/%d]', str, result.current, result.total)
 endfunction
 
 
