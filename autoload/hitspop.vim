@@ -11,8 +11,8 @@ let s:searchcount_options = #{
   \ }
 
 
-function! s:CreatePopup(line, col) abort
-  let s:hitspop_popup_id = popup_create(s:GetContent(), #{
+function! s:create_popup(line, col) abort
+  let s:popup_id = popup_create(s:get_content(), #{
     \ line: a:line,
     \ col: a:col,
     \ pos: 'topright',
@@ -20,79 +20,78 @@ function! s:CreatePopup(line, col) abort
     \ padding: [0, 1, 0, 1],
     \ highlight: 'HitsPopPopup',
     \ wrap: 0,
-    \ callback: 's:UnletPopupID',
+    \ callback: 's:unlet_popup_id',
     \ })
 endfunction
 
 
-function! s:DeletePopupIfExists() abort
-  if s:PopupExists()
-    call popup_close(s:hitspop_popup_id)
+function! s:delete_popup_if_exists() abort
+  if s:popup_exists()
+    call popup_close(s:popup_id)
   endif
 endfunction
 
 
-function! s:GetContent() abort
-  let l:result = searchcount(s:searchcount_options)
-
-  if empty(l:result)
+function! s:get_content() abort
+  let result = searchcount(s:searchcount_options)
+  if empty(result)
     return ''
   endif
 
   let search_word = s:show_search_word ? @/ . ' ' : ''
 
-  if l:result.incomplete ==# 1
+  if result.incomplete ==# 1
     return printf('%s[?/??]', search_word)
   endif
 
-  return printf('%s[%d/%d]', search_word, l:result.current, l:result.total)
+  return printf('%s[%d/%d]', search_word, result.current, result.total)
 endfunction
 
 
-function! s:HlIsOff() abort
+function! s:hl_is_off() abort
   return !v:hlsearch
 endfunction
 
 
-function! s:MovePopup(line, col) abort
-  call popup_move(s:hitspop_popup_id, #{line: a:line, col: a:col})
+function! s:move_popup(line, col) abort
+  call popup_move(s:popup_id, #{line: a:line, col: a:col})
 endfunction
 
 
-function! s:PopupExists() abort
-  return exists('s:hitspop_popup_id')
+function! s:popup_exists() abort
+  return exists('s:popup_id')
 endfunction
 
 
-function! s:UnletPopupID(id, result) abort
-  unlet s:hitspop_popup_id
+function! s:unlet_popup_id(id, result) abort
+  unlet s:popup_id
 endfunction
 
 
-function! s:UpdateContent() abort
-  call popup_settext(s:hitspop_popup_id, s:GetContent())
+function! s:update_content() abort
+  call popup_settext(s:popup_id, s:get_content())
 endfunction
 
 
 function! hitspop#main() abort
-  if s:HlIsOff()
-    call s:DeletePopupIfExists()
+  if s:hl_is_off()
+    call s:delete_popup_if_exists()
     return
   endif
 
-  let [l:popup_line, l:popup_col] = win_screenpos(0)
-  let l:popup_col += winwidth(0) - 1
+  let [popup_line, popup_col] = win_screenpos(0)
+  let popup_col += winwidth(0) - 1
 
-  if !s:PopupExists()
-    call s:CreatePopup(l:popup_line, l:popup_col)
+  if !s:popup_exists()
+    call s:create_popup(popup_line, popup_col)
   else
-    let l:pos = popup_getpos(s:hitspop_popup_id)
+    let pos = popup_getpos(s:popup_id)
 
-    if [l:popup_line, l:popup_col] != [l:pos.line, l:pos.col]
-      call s:MovePopup(l:popup_line, l:popup_col)
+    if [popup_line, popup_col] != [pos.line, pos.col]
+      call s:move_popup(popup_line, popup_col)
     endif
 
-    call s:UpdateContent()
+    call s:update_content()
   endif
 endfunction
 
@@ -101,5 +100,5 @@ function! hitspop#clean() abort
   if win_gettype() ==# 'popup'
     return
   endif
-  call s:DeletePopupIfExists()
+  call s:delete_popup_if_exists()
 endfunction
