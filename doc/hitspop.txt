@@ -13,7 +13,7 @@ COMMANDS                                                    *hitspop-commands*
 ==============================================================================
 HIGHLIGHTS                                                *hitspop-highlights*
 
-HitsPopPopup (default: links to |hi-Pmenu|)
+HitsPopPopup (default: links to |hl-Pmenu|)
 
 
 ==============================================================================
@@ -22,8 +22,39 @@ OPTIONS                                                      *hitspop-options*
 *g:hitspop_show_search_pattern* (default: 1)
     Determines whether or not to show your search pattern in the popup.
 
-*g:hitspop_popup_zindex* (default: 50)
-    Priotiry for the popup. Minumum value is 1, maximum value is 32000.
+
+*g:hitspop_popup_position*
+    A |Dictionary| to specify the popup position. The default value is:
+>
+        let g:hitspop_popup_position = #{
+          \ line: 'wintop',
+          \ col: 'winright',
+          \ zindex: 50,
+          \ }
+<
+    The accepted items are as follows.
+
+        Key     Value~
+        ---------------------------------------------------------------------
+        line    A |String| representing a line where to position the popup.
+                Use one of the following:
+                    "wintop"    top line of current window
+                    "winbot"    bottom line of current window
+        col     A |String| representing a column where to position the popup.
+                Use one of the following:
+                    "winleft"   leftmost column of current window
+                    "winright"  rightmost column of current window
+        zindex  A |Number| to specify priority for the popup. Minumum value
+                is 1, maximum value is 32000.
+
+    For example, if you want to display the popup at bottom left corner of
+    current window and keep the default zindex, use the following:
+>
+        let g:hitspop_popup_position = #{
+          \ line: 'winbot',
+          \ col: 'winleft',
+          \ }
+<
 
 
 ==============================================================================
