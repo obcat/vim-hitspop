@@ -36,13 +36,29 @@ nnoremap <silent> <ESC><ESC> :<C-u>nohlsearch<CR>
 
 ## Customization
 
+You can customize some features.
+
+### Position
+
+By default, popup is displayed at top right corner of current window.
+If you want to display the popup, for example, at bottom left corner of current window, then add this setting to your vimrc:
+
+```vim
+let g:hitspop_popup_position = #{
+  \ line: 'winbot',
+  \ col: 'winleft',
+  \ }
+```
+
+You can also specify other positions. Please see help file for more information.
+
+### Content
+
 By default, the search pattern appears in the popup along with the number of search results, such as `foo [3/7]`. If you want it to be like `[3/7]`, then add this setting to your vimrc:
 
 ```vim
 let g:hitspop_show_search_pattern = 0
 ```
-
-See help file for more information.
 
 ## License
 
