@@ -47,12 +47,16 @@ OPTIONS                                                      *hitspop-options*
         zindex  A |Number| to specify priority for the popup. Minumum value
                 is 1, maximum value is 32000.
 
-    For example, if you want to display the popup at bottom left corner of
-    current window and keep the default zindex, use the following:
+    In addition, any position strings, e.g. "wintop", can be followed by a
+    modifier of the form "[-+]N" (where N is an integer).
+
+    For example, to place the popup 3 columns off to the left from bottom
+    right corner of current window, and keep the default zindex, use the
+    following:
 >
         let g:hitspop_popup_position = #{
           \ line: 'winbot',
-          \ col: 'winleft',
+          \ col: 'winright-3',
           \ }
 <
 
