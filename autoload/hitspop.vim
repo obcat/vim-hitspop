@@ -13,6 +13,7 @@ function! s:init() abort "{{{
   if exists('g:hitspop_popup_position')
     call s:override_values(g:hitspop_popup_position, s:popup_position)
   endif
+  call s:expand_linecol(s:popup_position)
 
   let s:popup_static_options = #{
     \ zindex: s:popup_position.zindex,
@@ -35,6 +36,17 @@ function! s:override_values(source, target) abort "{{{
   endfor
 endfunction "}}}
 
+
+function! s:expand_linecol(config) abort "{{{
+  for key in ['line', 'col']
+    let val = a:config[key]
+    let mod = matchstr(val, '[-+][0-9]')
+    let base = trim(val, mod)
+    let mod = empty(mod) ? '0' : mod
+    let a:config[key] = #{base: base, mod: eval(mod)}
+  endfor
+endfunction "}}}
+
 call s:init()
 
 " This function is called on CursorMoved, CursorMovedI, CursorHold, and WinEnter
@@ -44,7 +56,7 @@ function! hitspop#main() abort "{{{
     return
   endif
 
-  let coord = s:get_coord()
+  let coord = s:get_coord(s:popup_position)
 
   if !s:popup_exists()
     call s:create_popup(coord)
@@ -139,20 +151,22 @@ endfunction "}}}
 
 
 " Return dictionary used to specify popup position
-function! s:get_coord() abort "{{{
+function! s:get_coord(config) abort "{{{
   let [line, col] = win_screenpos(0)
-  if s:popup_position.line == 'wintop'
+  if a:config.line.base == 'wintop'
     let pos = 'top'
-  elseif s:popup_position.line == 'winbot'
+  elseif a:config.line.base == 'winbot'
     let pos = 'bot'
     let line += winheight(0) - 1
   endif
-  if s:popup_position.col == 'winleft'
+  if a:config.col.base == 'winleft'
     let pos .= 'left'
-  elseif s:popup_position.col == 'winright'
+  elseif a:config.col.base == 'winright'
     let pos .= 'right'
     let col += winwidth(0) - 1
   endif
+  let line += a:config.line.mod
+  let col += a:config.col.mod
   return #{pos: pos, line: line, col: col}
 endfunction "}}}
 
