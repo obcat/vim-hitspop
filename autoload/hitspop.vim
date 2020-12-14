@@ -40,7 +40,7 @@ endfunction "}}}
 function! s:expand_linecol(config) abort "{{{
   for key in ['line', 'col']
     let val = a:config[key]
-    let mod = matchstr(val, '[-+][0-9]')
+    let mod = matchstr(val, '[-+][0-9]*')
     let base = trim(val, mod)
     let mod = empty(mod) ? '0' : mod
     let a:config[key] = #{base: base, mod: eval(mod)}
