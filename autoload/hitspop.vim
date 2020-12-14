@@ -2,18 +2,18 @@
 " License:    MIT License
 
 
-let s:def_pos = #{
-  \ line: 'wintop',
-  \ col: 'winright',
-  \ zindex: 50,
-  \ }
-
 function! s:init() abort "{{{
   let s:show_search_pattern = get(g:, 'hitspop_show_search_pattern', 1)
-  let s:popup_position = get(g:, 'hitspop_popup_position', s:def_pos)
   hi default link HitsPopPopup Pmenu
+  let s:popup_position = #{
+    \ line: 'wintop',
+    \ col: 'winright',
+    \ zindex: 50,
+    \ }
+  if exists('g:hitspop_popup_position')
+    call s:override_values(g:hitspop_popup_position, s:popup_position)
+  endif
 
-  call s:pos_init(s:popup_position)
   let s:popup_static_options = #{
     \ zindex: s:popup_position.zindex,
     \ padding: [0, 1, 0, 1],
@@ -26,10 +26,11 @@ function! s:init() abort "{{{
     \ }
 endfunction "}}}
 
-function! s:pos_init(pos) abort "{{{
-  for key in keys(s:def_pos)
-    if !has_key(a:pos, key)
-      let a:pos[key] = s:def_pos[key]
+
+function! s:override_values(source, target) abort "{{{
+  for key in keys(a:target)
+    if has_key(a:source, key)
+      let a:target[key] = a:source[key]
     endif
   endfor
 endfunction "}}}
