@@ -121,11 +121,12 @@ endfunction "}}}
 
 " Return search results
 function! s:get_content() abort "{{{
+  let search_pattern = strtrans(@/)
   try
     let result = searchcount(s:searchcount_options)
   catch /.*/
     " Error: @/ is invalid search pattern (e.g. \1)
-    return printf('%s [INVALID]', @/)
+    return printf('%s [INVALID]', search_pattern)
   endtry
 
   " @/ is empty
@@ -135,10 +136,10 @@ function! s:get_content() abort "{{{
 
   " Timed out
   if result.incomplete
-    return printf('%s [TIMED_OUT]', @/)
+    return printf('%s [TIMED_OUT]', search_pattern)
   endif
 
-  return printf('%s [%d/%d]', @/, result.current, result.total)
+  return printf('%s [%d/%d]', search_pattern, result.current, result.total)
 endfunction "}}}
 
 
