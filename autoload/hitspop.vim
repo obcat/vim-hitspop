@@ -3,7 +3,6 @@
 
 
 function! s:init() abort "{{{
-  let s:show_search_pattern = get(g:, 'hitspop_show_search_pattern', 1)
   hi default link HitsPopPopup Pmenu
   let s:popup_position = #{
     \ line: 'wintop',
@@ -126,15 +125,8 @@ function! s:get_content() abort "{{{
     let result = searchcount(s:searchcount_options)
   catch /.*/
     " Error: @/ is invalid search pattern (e.g. \1)
+    return printf('%s [INVALID]', @/)
   endtry
-
-  let str = s:show_search_pattern
-    \ ? @/ . "\<Space>"
-    \ : ''
-
-  if !exists('result')
-    return printf('%s[INVALID]', str)
-  endif
 
   " @/ is empty
   if empty(result)
@@ -143,10 +135,10 @@ function! s:get_content() abort "{{{
 
   " Timed out
   if result.incomplete
-    return printf('%s[TIMED_OUT]', str)
+    return printf('%s [TIMED_OUT]', @/)
   endif
 
-  return printf('%s[%d/%d]', str, result.current, result.total)
+  return printf('%s [%d/%d]', @/, result.current, result.total)
 endfunction "}}}
 
 

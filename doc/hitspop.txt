@@ -19,10 +19,6 @@ HitsPopPopup (default: links to |hl-Pmenu|)
 ==============================================================================
 OPTIONS                                                      *hitspop-options*
 
-*g:hitspop_show_search_pattern* (default: 1)
-    Determines whether or not to show your search pattern in the popup.
-
-
 *g:hitspop_popup_position*
     A |Dictionary| to specify the popup position. The default value is:
 >
