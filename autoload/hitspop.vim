@@ -61,8 +61,8 @@ function! hitspop#main() abort "{{{
   if !s:popup_exists()
     call s:create_popup(coord)
   else
-    let currpos = popup_getpos(s:popup_id)
-    if [currpos.line, currpos.col] != [coord.line, coord.col]
+    let opts = popup_getoptions(s:popup_id)
+    if [opts.line, opts.col] != [coord.line, coord.col]
       call s:move_popup(coord.line, coord.col)
     endif
 
