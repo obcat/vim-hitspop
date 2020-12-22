@@ -13,7 +13,14 @@ COMMANDS                                                    *hitspop-commands*
 ==============================================================================
 HIGHLIGHTS                                                *hitspop-highlights*
 
-HitsPopPopup (default: links to |hl-Pmenu|)
+hitspopNormal (default: links to |hl-Pmenu|)                *hl-hitspopNormal*
+
+    Highlight group for normal text in hitspop's popup.
+
+
+hitspopErrorMsg (default: links to |hl-Pmenu|)            *hl-hitspopErrorMsg*
+
+    Highlight group for error messages in hitspop's popup.
 
 
 ==============================================================================

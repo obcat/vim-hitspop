@@ -3,7 +3,11 @@
 
 
 function! s:init() abort "{{{
-  hi default link HitsPopPopup Pmenu
+  let s:HL_NORMAL   = 'hitspopNormal'
+  let s:HL_ERRORMSG = 'hitspopErrorMsg'
+  exe 'hi default link' s:HL_NORMAL 'Pmenu'
+  exe 'hi default link' s:HL_ERRORMSG 'Pmenu'
+
   let s:popup_position = #{
     \ line: 'wintop',
     \ col: 'winright',
@@ -24,7 +28,7 @@ function! s:init() abort "{{{
   let s:popup_static_options = #{
     \ zindex: s:popup_position.zindex,
     \ padding: s:padding,
-    \ highlight: 'HitsPopPopup',
+    \ highlight: 'hitspopNormal',
     \ callback: 's:unlet_popup_id',
     \ }
   let s:searchcount_options = #{
@@ -66,6 +70,7 @@ function! hitspop#main() abort "{{{
 
   if !s:popup_exists()
     call s:create_popup(coord)
+    call setbufvar(winbufnr(s:popup_id), '&filetype', 'hitspop')
   else
     let opts = popup_getoptions(s:popup_id)
     if [opts.line, opts.col] != [coord.line, coord.col]
@@ -205,6 +210,15 @@ function! s:get_coord(config) abort "{{{
   let line += a:config.line.mod
   let col += a:config.col.mod
   return #{pos: pos, line: line, col: col}
+endfunction "}}}
+
+
+function! hitspop#_syntax_args() abort "{{{
+  let args = []
+  for msg in values(s:error_msgs)
+    let args += [[s:HL_ERRORMSG, msg]]
+  endfor
+  return args
 endfunction "}}}
 
 
