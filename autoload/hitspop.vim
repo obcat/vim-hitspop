@@ -3,20 +3,16 @@
 
 
 function! s:init() abort "{{{
+  let s:line_axis    = get(g:, 'hitspop_line_axis', 'wintop')
+  let s:line_coord   = get(g:, 'hitspop_line_coord', 0)
+  let s:column_axis  = get(g:, 'hitspop_column_axis', 'winright')
+  let s:column_coord = get(g:, 'hitspop_column_coord', 0)
+  let s:zindex = get(g:, 'hitspop_zindex', 50)
+
   let s:HL_NORMAL   = 'hitspopNormal'
   let s:HL_ERRORMSG = 'hitspopErrorMsg'
   exe 'hi default link' s:HL_NORMAL 'Pmenu'
   exe 'hi default link' s:HL_ERRORMSG 'Pmenu'
-
-  let s:popup_position = #{
-    \ line: 'wintop',
-    \ col: 'winright',
-    \ zindex: 50,
-    \ }
-  if exists('g:hitspop_popup_position')
-    call s:override_values(g:hitspop_popup_position, s:popup_position)
-  endif
-  call s:expand_linecol(s:popup_position)
 
   let s:error_msgs = #{
     \ invalid:  'Invalid',
@@ -26,7 +22,7 @@ function! s:init() abort "{{{
     \ }
   let s:padding = [0, 1, 0, 1]
   let s:popup_static_options = #{
-    \ zindex: s:popup_position.zindex,
+    \ zindex: s:zindex,
     \ padding: s:padding,
     \ highlight: 'hitspopNormal',
     \ callback: 's:unlet_popup_id',
@@ -38,25 +34,6 @@ function! s:init() abort "{{{
 endfunction "}}}
 
 
-function! s:override_values(source, target) abort "{{{
-  for key in keys(a:target)
-    if has_key(a:source, key)
-      let a:target[key] = a:source[key]
-    endif
-  endfor
-endfunction "}}}
-
-
-function! s:expand_linecol(config) abort "{{{
-  for key in ['line', 'col']
-    let val = a:config[key]
-    let mod = matchstr(val, '[-+][0-9]*')
-    let base = trim(val, mod)
-    let mod = empty(mod) ? '0' : mod
-    let a:config[key] = #{base: base, mod: eval(mod)}
-  endfor
-endfunction "}}}
-
 call s:init()
 
 " This function is called on CursorMoved, CursorMovedI, CursorHold, and WinEnter
@@ -66,7 +43,7 @@ function! hitspop#main() abort "{{{
     return
   endif
 
-  let coord = s:get_coord(s:popup_position)
+  let coord = s:get_coord()
 
   if !s:popup_exists()
     call s:create_popup(coord)
@@ -193,22 +170,22 @@ endfunction "}}}
 
 
 " Return dictionary used to specify popup position
-function! s:get_coord(config) abort "{{{
+function! s:get_coord() abort "{{{
   let [line, col] = win_screenpos(0)
-  if a:config.line.base == 'wintop'
+  if s:line_axis == 'wintop'
     let pos = 'top'
-  elseif a:config.line.base == 'winbot'
+  elseif s:line_axis == 'winbot'
     let pos = 'bot'
     let line += winheight(0) - 1
   endif
-  if a:config.col.base == 'winleft'
+  if s:column_axis == 'winleft'
     let pos .= 'left'
-  elseif a:config.col.base == 'winright'
+  elseif s:column_axis == 'winright'
     let pos .= 'right'
     let col += winwidth(0) - 1
   endif
-  let line += a:config.line.mod
-  let col += a:config.col.mod
+  let line += s:line_coord
+  let col += s:column_coord
   return #{pos: pos, line: line, col: col}
 endfunction "}}}
 

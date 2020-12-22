@@ -26,42 +26,47 @@ hitspopErrorMsg (default: links to |hl-Pmenu|)            *hl-hitspopErrorMsg*
 ==============================================================================
 OPTIONS                                                      *hitspop-options*
 
-*g:hitspop_popup_position*
-    A |Dictionary| to specify the popup position. The default value is:
+*g:hitspop_line_axis*       string  (default: "wintop")
+*g:hitspop_line_coord*      number  (default: 0)
+*g:hitspop_column_axis*     string  (default: "winright")
+*g:hitspop_column_coord*    number  (default: 0)
+    Specify popup position.  By default, the position is top right corner of
+    current window.  Accepted values of the axis options are:
+
+    |g:hitspop_line_axis|
+        "wintop"    top line of current window
+        "winbot"    bottom line of current window
+    |g:hitspop_column_axis|
+        "winleft"   leftmost column of current window
+        "winright"  rightmost column of current window
+            
+                                "winright"
+                                    |
+                -7 -6 -5 -4 -3 -2 -1| 0
+              --+-------------------+--->   "wintop"
+                |                   | 1
+                |                   | 2
+                |                   | 3
+                |      window       | 4     (default axes)
+                |                   | 5
+                |                   | 6
+                |                   | 7
+                +-------------------| 8 
+                                    | 9
+                                    v
+
+    For example, to place popup 2 columns off to the left from bottom right
+    corner of current window, use this:
 >
-        let g:hitspop_popup_position = #{
-          \ line: 'wintop',
-          \ col: 'winright',
-          \ zindex: 50,
-          \ }
+        let g:hitspop_line_axis    = 'winbot'
+        let g:hitspop_line_coord   = 0
+        let g:hitspop_column_axis  = 'winright'
+        let g:hitspop_column_coord = -2
 <
-    The accepted items are as follows.
 
-        Key     Value~
-        ---------------------------------------------------------------------
-        line    A |String| representing a line where to position the popup.
-                Use one of the following:
-                    "wintop"    top line of current window
-                    "winbot"    bottom line of current window
-        col     A |String| representing a column where to position the popup.
-                Use one of the following:
-                    "winleft"   leftmost column of current window
-                    "winright"  rightmost column of current window
-        zindex  A |Number| to specify priority for the popup. Minumum value
-                is 1, maximum value is 32000.
 
-    In addition, any position strings, e.g. "wintop", can be followed by a
-    modifier of the form "[-+]N" (where N is an integer).
-
-    For example, to place the popup 3 columns off to the left from bottom
-    right corner of current window, and keep the default zindex, use the
-    following:
->
-        let g:hitspop_popup_position = #{
-          \ line: 'winbot',
-          \ col: 'winright-3',
-          \ }
-<
+*g:hitspop_zindex*  number  (default: 50)
+    Priority for the popup.  Minumum value is 1, maximum value is 32000.
 
 
 ==============================================================================
