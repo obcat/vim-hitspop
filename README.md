@@ -75,8 +75,8 @@ By default, popup is displayed at top right corner of current window.
 If you want to display the popup, for example, at bottom left corner of current window, use this:
 
 ```vim
-let g:hitspop_line_axis = 'winbot'
-let g:hitspop_column_axis = 'winright'
+let g:hitspop_line   = 'winbot'
+let g:hitspop_column = 'winright'
 ```
 
 ![botright](https://user-images.githubusercontent.com/64692680/102915781-b3293380-44c5-11eb-9068-84fe2defe5fd.png)

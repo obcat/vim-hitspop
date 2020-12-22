@@ -3,10 +3,10 @@
 
 
 function! s:init() abort "{{{
-  let g:hitspop_line_axis    = get(g:, 'hitspop_line_axis', 'wintop')
-  let g:hitspop_line_coord   = get(g:, 'hitspop_line_coord', 0)
-  let g:hitspop_column_axis  = get(g:, 'hitspop_column_axis', 'winright')
-  let g:hitspop_column_coord = get(g:, 'hitspop_column_coord', 0)
+  let g:hitspop_line       = get(g:, 'hitspop_line', 'wintop')
+  let g:hitspop_line_mod   = get(g:, 'hitspop_line_mod', 0)
+  let g:hitspop_column     = get(g:, 'hitspop_column', 'winright')
+  let g:hitspop_column_mod = get(g:, 'hitspop_column_mod', 0)
   let g:hitspop_zindex = get(g:, 'hitspop_zindex', 50)
   let g:hitspop_minwidth = get(g:, 'hitspop_minwidth', 20)
   let g:hitspop_maxwidth = get(g:, 'hitspop_maxwidth', 30)
@@ -162,20 +162,20 @@ endfunction "}}}
 " Return dictionary used to specify popup position
 function! s:get_coord() abort "{{{
   let [line, col] = win_screenpos(0)
-  if g:hitspop_line_axis == 'wintop'
+  if g:hitspop_line == 'wintop'
     let pos = 'top'
-  elseif g:hitspop_line_axis == 'winbot'
+  elseif g:hitspop_line == 'winbot'
     let pos = 'bot'
     let line += winheight(0) - 1
   endif
-  if g:hitspop_column_axis == 'winleft'
+  if g:hitspop_column == 'winleft'
     let pos .= 'left'
-  elseif g:hitspop_column_axis == 'winright'
+  elseif g:hitspop_column == 'winright'
     let pos .= 'right'
     let col += winwidth(0) - 1
   endif
-  let line += g:hitspop_line_coord
-  let col += g:hitspop_column_coord
+  let line += g:hitspop_line_mod
+  let col += g:hitspop_column_mod
   return #{pos: pos, line: line, col: col}
 endfunction "}}}
 

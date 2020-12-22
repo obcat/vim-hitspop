@@ -49,17 +49,17 @@ hitspopErrorMsg (default: links to |hl-Pmenu|)          *hl-hitspopErrorMsg*
 ==============================================================================
 OPTIONS                                                      *hitspop-options*
 
-*g:hitspop_line_axis*       string  (default: "wintop")
-*g:hitspop_line_coord*      number  (default: 0)
-*g:hitspop_column_axis*     string  (default: "winright")
-*g:hitspop_column_coord*    number  (default: 0)
+*g:hitspop_line*        string  (default: "wintop")
+*g:hitspop_line_mod*    number  (default: 0)
+*g:hitspop_column*      string  (default: "winright")
+*g:hitspop_column_mod*  number  (default: 0)
     Specify |HitsPop| popup position.  By default, the position is top right
-    corner of current window.  Accepted values of the axis options are:
+    corner of current window.  Accepted values of the line/column options are:
 
-    |g:hitspop_line_axis|
+    |g:hitspop_line|
         "wintop"    top line of current window
         "winbot"    bottom line of current window
-    |g:hitspop_column_axis|
+    |g:hitspop_column|
         "winleft"   leftmost column of current window
         "winright"  rightmost column of current window
 >
@@ -70,7 +70,7 @@ OPTIONS                                                      *hitspop-options*
                 |                   | 1
                 |                   | 2
                 |                   | 3
-                |      window       | 4     (default axes)
+                |      window       | 4     (default)
                 |                   | 5
                 |                   | 6
                 |                   | 7
@@ -81,10 +81,10 @@ OPTIONS                                                      *hitspop-options*
     For example, to place popup 2 columns off to the left from bottom right
     corner of current window, use this:
 >
-        let g:hitspop_line_axis    = 'winbot'
-        let g:hitspop_line_coord   = 0
-        let g:hitspop_column_axis  = 'winright'
-        let g:hitspop_column_coord = -2
+        let g:hitspop_line       = 'winbot'
+        let g:hitspop_line_mod   = 0
+        let g:hitspop_column     = 'winright'
+        let g:hitspop_column_mod = -2
 <
 
 
