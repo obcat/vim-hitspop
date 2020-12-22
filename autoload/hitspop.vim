@@ -14,9 +14,16 @@ function! s:init() abort "{{{
   endif
   call s:expand_linecol(s:popup_position)
 
+  let s:error_msgs = #{
+    \ invalid:  'Invalid',
+    \ empty:    'Empty',
+    \ timeout:  'Timed out',
+    \ notfound: 'No results',
+    \ }
+  let s:padding = [0, 1, 0, 1]
   let s:popup_static_options = #{
     \ zindex: s:popup_position.zindex,
-    \ padding: [0, 1, 0, 1],
+    \ padding: s:padding,
     \ highlight: 'HitsPopPopup',
     \ callback: 's:unlet_popup_id',
     \ }
@@ -126,20 +133,57 @@ function! s:get_content() abort "{{{
     let result = searchcount(s:searchcount_options)
   catch /.*/
     " Error: @/ is invalid search pattern (e.g. \1)
-    return printf('%s [INVALID]', search_pattern)
+    return s:format(search_pattern, s:error_msgs.invalid)
   endtry
 
   " @/ is empty
   if empty(result)
-    return '[@/==EMPTY]'
+    return s:format(search_pattern, s:error_msgs.empty)
   endif
 
   " Timed out
   if result.incomplete
-    return printf('%s [TIMED_OUT]', search_pattern)
+    return s:format(search_pattern, s:error_msgs.timeout)
   endif
 
-  return printf('%s [%d/%d]', search_pattern, result.current, result.total)
+  if result.total
+    return s:format(search_pattern, printf('%*d of %d', len(result.total), result.current, result.total))
+  else
+    return s:format(search_pattern, s:error_msgs.notfound)
+  endif
+endfunction "}}}
+
+
+function! s:format(search_pattern, result) abort "{{{
+  let popup_maxwidth = 30
+  let popup_minwidth = 20
+  let padding = s:padding[1] + s:padding[3]
+  let result_width = strwidth(a:result)
+  let separator = "\<Space>\<Space>"
+  let separator_width = strwidth(separator)
+  let search_pattern_field_maxwidth = popup_maxwidth - (padding + separator_width + result_width)
+  let search_pattern_field_minwidth = popup_minwidth - (padding + separator_width + result_width)
+  let truncation_text = '..'
+
+  let content = printf('%-*.*S',
+   \ search_pattern_field_minwidth,
+   \ search_pattern_field_maxwidth,
+   \ search_pattern_field_maxwidth < strwidth(a:search_pattern)
+   \   ? s:truncate(a:search_pattern, truncation_text, search_pattern_field_maxwidth)
+   \   : a:search_pattern,
+   \ )
+  let content .= separator
+  let content .= a:result
+  return content
+endfunction "}}}
+
+
+function! s:truncate(target_text, truncation_text, width) "{{{
+  return printf('%.*S%s',
+   \ a:width - strwidth(a:truncation_text),
+   \ a:target_text,
+   \ a:truncation_text
+   \ )
 endfunction "}}}
 
 
