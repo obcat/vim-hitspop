@@ -2,7 +2,7 @@
 
 Popup the number of search results.
 
-![hitspop](https://i.gyazo.com/9d37d82d7ed411e45f4e461311e1f884.gif)
+![hitspop](https://user-images.githubusercontent.com/64692680/102864154-fdcf8f00-4476-11eb-9b86-b0572c441488.gif)
 
 ## Installation
 
