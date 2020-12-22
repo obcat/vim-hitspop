@@ -8,6 +8,8 @@ function! s:init() abort "{{{
   let g:hitspop_column_axis  = get(g:, 'hitspop_column_axis', 'winright')
   let g:hitspop_column_coord = get(g:, 'hitspop_column_coord', 0)
   let g:hitspop_zindex = get(g:, 'hitspop_zindex', 50)
+  let g:hitspop_minwidth = get(g:, 'hitspop_minwidth', 20)
+  let g:hitspop_maxwidth = get(g:, 'hitspop_maxwidth', 30)
   const s:HL_NORMAL   = 'hitspopNormal'
   const s:HL_ERRORMSG = 'hitspopErrorMsg'
   exe 'hi default link' s:HL_NORMAL 'Pmenu'
@@ -125,14 +127,14 @@ endfunction "}}}
 
 
 function! s:format(search_pattern, result) abort "{{{
-  const popup_maxwidth = 30
-  const popup_minwidth = 20
+  const popup_minwidth = g:hitspop_minwidth
+  const popup_maxwidth = g:hitspop_maxwidth
   const padding = s:PADDING[1] + s:PADDING[3]
   const result_width = strwidth(a:result)
   const separator = "\<Space>\<Space>"
   const separator_width = strwidth(separator)
-  const search_pattern_field_maxwidth = popup_maxwidth - (padding + separator_width + result_width)
   const search_pattern_field_minwidth = popup_minwidth - (padding + separator_width + result_width)
+  const search_pattern_field_maxwidth = popup_maxwidth - (padding + separator_width + result_width)
   const truncation_text = '..'
 
   let content = printf('%-*.*S',

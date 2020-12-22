@@ -88,10 +88,15 @@ OPTIONS                                                      *hitspop-options*
 <
 
 
-*g:hitspop_zindex*  number  (default: 50)
+*g:hitspop_zindex*      number  (default: 50)
     Priority for |HitsPop| popup.  Minumum value is 1, maximum value is 32000.
     If this value is less than the zindex of other popup, then |HitsPop| popup
     will be covered by that popup, and vice versa.
+
+
+*g:hitspop_minwidth*    number  (default: 20)
+*g:hitspop_maxwidth*    number  (default: 30)
+    Minimum and Maximum width of |HitsPop| popup.
 
 
 ==============================================================================
