@@ -2,7 +2,7 @@
 
 Popup the number of search results.
 
-![hitspop](https://user-images.githubusercontent.com/64692680/96633749-82594080-1354-11eb-913d-6d837891d845.gif)
+![hitspop](https://i.gyazo.com/9d37d82d7ed411e45f4e461311e1f884.gif)
 
 ## Installation
 
@@ -41,17 +41,34 @@ You can customize some features.
 ### Position
 
 By default, popup is displayed at top right corner of current window.
-If you want to display the popup, for example, at bottom left corner of current window, then add this setting to your vimrc:
+If you want to display the popup, for example, at bottom left corner of current window, use this:
 
 ```vim
-let g:hitspop_popup_position = #{
-  \ line: 'winbot',
-  \ col: 'winleft',
-  \ }
+let g:hitspop_line_axis = 'winbot'
+let g:hitspop_column_axis = 'winright'
 ```
+
+![botright](https://user-images.githubusercontent.com/64692680/102859740-d628f880-446f-11eb-9f40-00b4fd97e434.png)
 
 You can also specify other positions. Please see help file for more information.
 
+### Highlight
+
+The popup color can be changed setting the following highlight groups:
+
+* `hitspopNormal` (default: links to `Pmenu`)
+* `hitspopErrorMsg` (default: links to `Pmenu`)
+
+Example:
+
+![highlight ex](https://user-images.githubusercontent.com/64692680/102861798-851b0380-4473-11eb-9f32-8486cf78c822.png)
+
+
+```vim
+highlight link hitspopErrorMsg ErrorMsg
+```
+
+📝 I use [iceberg.vim](https://github.com/cocopon/iceberg.vim) for color scheme.
 
 ## License
 
