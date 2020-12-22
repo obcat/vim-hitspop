@@ -8,28 +8,23 @@ function! s:init() abort "{{{
   let g:hitspop_column_axis  = get(g:, 'hitspop_column_axis', 'winright')
   let g:hitspop_column_coord = get(g:, 'hitspop_column_coord', 0)
   let g:hitspop_zindex = get(g:, 'hitspop_zindex', 50)
-
-  let s:HL_NORMAL   = 'hitspopNormal'
-  let s:HL_ERRORMSG = 'hitspopErrorMsg'
+  const s:HL_NORMAL   = 'hitspopNormal'
+  const s:HL_ERRORMSG = 'hitspopErrorMsg'
   exe 'hi default link' s:HL_NORMAL 'Pmenu'
   exe 'hi default link' s:HL_ERRORMSG 'Pmenu'
 
-  let s:error_msgs = #{
+  const s:ERROR_MSGS = #{
     \ invalid:  'Invalid',
     \ empty:    'Empty',
     \ timeout:  'Timed out',
     \ notfound: 'No results',
     \ }
-  let s:padding = [0, 1, 0, 1]
-  let s:popup_static_options = #{
+  const s:PADDING = [0, 1, 0, 1]
+  const s:POPUP_STATIC_OPTIONS = #{
     \ zindex: g:hitspop_zindex,
-    \ padding: s:padding,
+    \ padding: s:PADDING,
     \ highlight: 'hitspopNormal',
     \ callback: 's:unlet_popup_id',
-    \ }
-  let s:searchcount_options = #{
-    \ maxcount: 0,
-    \ timeout: 30,
     \ }
 endfunction "}}}
 
@@ -38,18 +33,18 @@ call s:init()
 
 " This function is called on CursorMoved, CursorMovedI, CursorHold, and WinEnter
 function! hitspop#main() abort "{{{
-  if s:hl_is_off()
+  if !v:hlsearch
     call s:delete_popup_if_exists()
     return
   endif
 
-  let coord = s:get_coord()
+  const coord = s:get_coord()
 
   if !s:popup_exists()
-    call s:create_popup(coord)
+    let s:popup_id = s:create_popup(coord)
     call setbufvar(winbufnr(s:popup_id), '&filetype', 'hitspop')
   else
-    let opts = popup_getoptions(s:popup_id)
+    const opts = popup_getoptions(s:popup_id)
     if [opts.line, opts.col] != [coord.line, coord.col]
       call s:move_popup(coord.line, coord.col)
     endif
@@ -70,9 +65,7 @@ endfunction "}}}
 
 
 function! s:create_popup(coord) abort "{{{
-  let content = s:get_content()
-  let options = extend(s:popup_static_options, a:coord)
-  let s:popup_id = popup_create(content, options)
+  return popup_create(s:get_content(), extend(deepcopy(s:POPUP_STATIC_OPTIONS), a:coord))
 endfunction "}}}
 
 
@@ -93,11 +86,6 @@ function! s:update_content() abort "{{{
 endfunction "}}}
 
 
-function! s:hl_is_off() abort "{{{
-  return !v:hlsearch
-endfunction "}}}
-
-
 function! s:popup_exists() abort "{{{
   return exists('s:popup_id')
 endfunction "}}}
@@ -110,42 +98,42 @@ endfunction "}}}
 
 " Return search results
 function! s:get_content() abort "{{{
-  let search_pattern = strtrans(@/)
+  const search_pattern = strtrans(@/)
   try
-    let result = searchcount(s:searchcount_options)
+    const result = searchcount(#{maxcount: 0, timeout: 30})
   catch /.*/
     " Error: @/ is invalid search pattern (e.g. \1)
-    return s:format(search_pattern, s:error_msgs.invalid)
+    return s:format(search_pattern, s:ERROR_MSGS.invalid)
   endtry
 
   " @/ is empty
   if empty(result)
-    return s:format(search_pattern, s:error_msgs.empty)
+    return s:format(search_pattern, s:ERROR_MSGS.empty)
   endif
 
   " Timed out
   if result.incomplete
-    return s:format(search_pattern, s:error_msgs.timeout)
+    return s:format(search_pattern, s:ERROR_MSGS.timeout)
   endif
 
   if result.total
     return s:format(search_pattern, printf('%*d of %d', len(result.total), result.current, result.total))
   else
-    return s:format(search_pattern, s:error_msgs.notfound)
+    return s:format(search_pattern, s:ERROR_MSGS.notfound)
   endif
 endfunction "}}}
 
 
 function! s:format(search_pattern, result) abort "{{{
-  let popup_maxwidth = 30
-  let popup_minwidth = 20
-  let padding = s:padding[1] + s:padding[3]
-  let result_width = strwidth(a:result)
-  let separator = "\<Space>\<Space>"
-  let separator_width = strwidth(separator)
-  let search_pattern_field_maxwidth = popup_maxwidth - (padding + separator_width + result_width)
-  let search_pattern_field_minwidth = popup_minwidth - (padding + separator_width + result_width)
-  let truncation_text = '..'
+  const popup_maxwidth = 30
+  const popup_minwidth = 20
+  const padding = s:PADDING[1] + s:PADDING[3]
+  const result_width = strwidth(a:result)
+  const separator = "\<Space>\<Space>"
+  const separator_width = strwidth(separator)
+  const search_pattern_field_maxwidth = popup_maxwidth - (padding + separator_width + result_width)
+  const search_pattern_field_minwidth = popup_minwidth - (padding + separator_width + result_width)
+  const truncation_text = '..'
 
   let content = printf('%-*.*S',
    \ search_pattern_field_minwidth,
@@ -192,7 +180,7 @@ endfunction "}}}
 
 function! hitspop#_syntax_args() abort "{{{
   let args = []
-  for msg in values(s:error_msgs)
+  for msg in values(s:ERROR_MSGS)
     let args += [[s:HL_ERRORMSG, msg]]
   endfor
   return args
