@@ -23,10 +23,10 @@ function! s:init() abort "{{{
     \ }
   const s:PADDING = [0, 1, 0, 1]
   const s:POPUP_STATIC_OPTIONS = #{
-    \ zindex: g:hitspop_zindex,
+    \ zindex:  g:hitspop_zindex,
     \ padding: s:PADDING,
-    \ highlight: 'hitspopNormal',
-    \ callback: 's:unlet_popup_id',
+    \ highlight: s:HL_NORMAL,
+    \ callback: {-> s:unlet_popup_id()},
     \ }
 endfunction "}}}
 
@@ -59,7 +59,7 @@ endfunction "}}}
 " This function is called on WinLeave
 function! hitspop#clean() abort "{{{
   " Avoid E994 (see https://github.com/obcat/vim-hitspop/issues/5)
-  if win_gettype() ==# 'popup'
+  if win_gettype() is# 'popup'
     return
   endif
   call s:delete_popup_if_exists()
@@ -67,7 +67,10 @@ endfunction "}}}
 
 
 function! s:create_popup(coord) abort "{{{
-  return popup_create(s:get_content(), extend(deepcopy(s:POPUP_STATIC_OPTIONS), a:coord))
+  return popup_create(
+    \ s:get_content(),
+    \ deepcopy(s:POPUP_STATIC_OPTIONS)->extend(a:coord)
+    \ )
 endfunction "}}}
 
 
@@ -93,7 +96,7 @@ function! s:popup_exists() abort "{{{
 endfunction "}}}
 
 
-function! s:unlet_popup_id(id, result) abort "{{{
+function! s:unlet_popup_id() abort "{{{
   unlet s:popup_id
 endfunction "}}}
 
@@ -118,64 +121,64 @@ function! s:get_content() abort "{{{
     return s:format(search_pattern, s:ERROR_MSGS.timeout)
   endif
 
-  if result.total
-    return s:format(search_pattern, printf('%*d of %d', len(result.total), result.current, result.total))
-  else
+  if result.total == 0
     return s:format(search_pattern, s:ERROR_MSGS.notfound)
+  else
+    return s:format(
+      \ search_pattern,
+      \ printf('%*d of %d', len(result.total), result.current, result.total)
+      \ )
   endif
 endfunction "}}}
 
 
-function! s:format(search_pattern, result) abort "{{{
-  const popup_minwidth = g:hitspop_minwidth
-  const popup_maxwidth = g:hitspop_maxwidth
+function! s:format(pattern, result) abort "{{{
   const padding = s:PADDING[1] + s:PADDING[3]
   const result_width = strwidth(a:result)
   const separator = "\<Space>\<Space>"
   const separator_width = strwidth(separator)
-  const search_pattern_field_minwidth = popup_minwidth - (padding + separator_width + result_width)
-  const search_pattern_field_maxwidth = popup_maxwidth - (padding + separator_width + result_width)
-  const truncation_text = '..'
+  const patternfield_minwidth = g:hitspop_minwidth - (padding + separator_width + result_width)
+  const patternfield_maxwidth = g:hitspop_maxwidth - (padding + separator_width + result_width)
+  const truncation_symbol = '..'
 
-  let content = printf('%-*.*S',
-   \ search_pattern_field_minwidth,
-   \ search_pattern_field_maxwidth,
-   \ search_pattern_field_maxwidth < strwidth(a:search_pattern)
-   \   ? s:truncate(a:search_pattern, truncation_text, search_pattern_field_maxwidth)
-   \   : a:search_pattern,
-   \ )
+  let content = printf('%-*S',
+    \ patternfield_minwidth,
+    \ patternfield_maxwidth < strwidth(a:pattern)
+    \   ? s:truncate(a:pattern, truncation_symbol, patternfield_maxwidth)
+    \   : a:pattern,
+    \ )
   let content .= separator
   let content .= a:result
   return content
 endfunction "}}}
 
 
-function! s:truncate(target_text, truncation_text, width) "{{{
+function! s:truncate(target, symbol, width) "{{{
   return printf('%.*S%s',
-   \ a:width - strwidth(a:truncation_text),
-   \ a:target_text,
-   \ a:truncation_text
-   \ )
+    \ a:width - strwidth(a:symbol),
+    \ a:target,
+    \ a:symbol
+    \ )
 endfunction "}}}
 
 
 " Return dictionary used to specify popup position
 function! s:get_coord() abort "{{{
   let [line, col] = win_screenpos(0)
-  if g:hitspop_line == 'wintop'
+  if g:hitspop_line is# 'wintop'
     let pos = 'top'
-  elseif g:hitspop_line == 'winbot'
+  elseif g:hitspop_line is# 'winbot'
     let pos = 'bot'
     let line += winheight(0) - 1
   endif
-  if g:hitspop_column == 'winleft'
+  if g:hitspop_column is# 'winleft'
     let pos .= 'left'
-  elseif g:hitspop_column == 'winright'
+  elseif g:hitspop_column is# 'winright'
     let pos .= 'right'
     let col += winwidth(0) - 1
   endif
   let line += g:hitspop_line_mod
-  let col += g:hitspop_column_mod
+  let col  += g:hitspop_column_mod
   return #{pos: pos, line: line, col: col}
 endfunction "}}}
 
