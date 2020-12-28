@@ -98,21 +98,19 @@ endfunction "}}}
 
 " Return search results
 function! s:get_content() abort "{{{
+  if empty(@/)
+    return s:format('', s:ERROR_MSGS.empty)
+  endif
+
   const search_pattern = strtrans(@/)
+
   try
     const result = searchcount(#{maxcount: 0, timeout: 30})
   catch /.*/
-    " Error: @/ is invalid search pattern (e.g. \1)
     return s:format(search_pattern, s:ERROR_MSGS.invalid)
   endtry
 
-  " @/ is empty
-  if empty(result)
-    return s:format(search_pattern, s:ERROR_MSGS.empty)
-  endif
-
-  " Timed out
-  if result.incomplete
+  if result.incomplete == 1
     return s:format(search_pattern, s:ERROR_MSGS.timeout)
   endif
 
