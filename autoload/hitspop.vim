@@ -105,7 +105,7 @@ function! s:get_content() abort "{{{
   const search_pattern = strtrans(@/)
 
   try
-    const result = searchcount(#{maxcount: 0, timeout: 30})
+    const result = searchcount(#{maxcount: 0, timeout: 10})
   catch /.*/
     return s:format(search_pattern, s:ERROR_MSGS.invalid)
   endtry
