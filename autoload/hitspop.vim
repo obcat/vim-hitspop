@@ -10,19 +10,19 @@ function! s:init() abort "{{{
   let g:hitspop_zindex = get(g:, 'hitspop_zindex', 50)
   let g:hitspop_minwidth = get(g:, 'hitspop_minwidth', 20)
   let g:hitspop_maxwidth = get(g:, 'hitspop_maxwidth', 30)
-  const s:HL_NORMAL   = 'hitspopNormal'
-  const s:HL_ERRORMSG = 'hitspopErrorMsg'
+  let s:HL_NORMAL   = 'hitspopNormal'
+  let s:HL_ERRORMSG = 'hitspopErrorMsg'
   exe 'hi default link' s:HL_NORMAL 'Pmenu'
   exe 'hi default link' s:HL_ERRORMSG 'Pmenu'
 
-  const s:ERROR_MSGS = #{
+  let s:ERROR_MSGS = #{
     \ invalid:  'Invalid',
     \ empty:    'Empty',
     \ timeout:  'Timed out',
     \ notfound: 'No results',
     \ }
-  const s:PADDING = [0, 1, 0, 1]
-  const s:POPUP_STATIC_OPTIONS = #{
+  let s:PADDING = [0, 1, 0, 1]
+  let s:POPUP_STATIC_OPTIONS = #{
     \ zindex:  g:hitspop_zindex,
     \ padding: s:PADDING,
     \ highlight: s:HL_NORMAL,
@@ -43,13 +43,13 @@ function! hitspop#main() abort "{{{
     return
   endif
 
-  const coord = s:get_coord()
+  let coord = s:get_coord()
 
   if !s:popup_exists()
     let s:popup_id = s:create_popup(coord)
     call setbufvar(winbufnr(s:popup_id), '&filetype', 'hitspop')
   else
-    const opts = popup_getoptions(s:popup_id)
+    let opts = popup_getoptions(s:popup_id)
     if [opts.line, opts.col] != [coord.line, coord.col]
       call s:move_popup(coord.line, coord.col)
     endif
@@ -114,7 +114,7 @@ function! s:get_content() abort "{{{
     let s:save_info = info
   endif
 
-  const search_pattern = strtrans(@/)
+  let search_pattern = strtrans(@/)
 
   if s:timeout_counter == 3
     return s:format(search_pattern, s:ERROR_MSGS.timeout)
@@ -124,7 +124,7 @@ function! s:get_content() abort "{{{
   endif
 
   try
-    const result = searchcount(#{maxcount: 0, timeout: 10})
+    let result = searchcount(#{maxcount: 0, timeout: 10})
   catch /.*/
     return s:format(search_pattern, s:ERROR_MSGS.invalid)
   endtry
@@ -149,13 +149,13 @@ endfunction "}}}
 
 
 function! s:format(pattern, result) abort "{{{
-  const padding = s:PADDING[1] + s:PADDING[3]
-  const result_width = strwidth(a:result)
-  const separator = "\<Space>\<Space>"
-  const separator_width = strwidth(separator)
-  const patternfield_minwidth = g:hitspop_minwidth - (padding + separator_width + result_width)
-  const patternfield_maxwidth = g:hitspop_maxwidth - (padding + separator_width + result_width)
-  const truncation_symbol = '..'
+  let padding = s:PADDING[1] + s:PADDING[3]
+  let result_width = strwidth(a:result)
+  let separator = "\<Space>\<Space>"
+  let separator_width = strwidth(separator)
+  let patternfield_minwidth = g:hitspop_minwidth - (padding + separator_width + result_width)
+  let patternfield_maxwidth = g:hitspop_maxwidth - (padding + separator_width + result_width)
+  let truncation_symbol = '..'
 
   let content = printf('%-*S',
     \ patternfield_minwidth,
