@@ -56,12 +56,7 @@ function! hitspop#main() abort "{{{
 endfunction "}}}
 
 
-" This function is called on WinLeave
 function! hitspop#clean() abort "{{{
-  " Avoid E994 (see https://github.com/obcat/vim-hitspop/issues/5)
-  if win_gettype() is# 'popup'
-    return
-  endif
   call s:delete_popup_if_exists()
 endfunction "}}}
 
