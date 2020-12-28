@@ -2,15 +2,14 @@
 
 Popup the number of search results.
 
-![hitspop](https://user-images.githubusercontent.com/64692680/102915667-81b06800-44c5-11eb-8b53-e37eacc4e67b.gif)
+![hitspop eyecatch][1]
 
 
 ## Installation
 
 Requires Vim 8.2.0896 or later.
 
-If you use [vim-plug](https://github.com/junegunn/vim-plug), then add the
-following line to your vimrc:
+If you use [vim-plug][2], then add the following line to your vimrc:
 
 ```vim
 Plug 'obcat/vim-hitspop'
@@ -27,24 +26,23 @@ The `hlsearch` option must be turned on for this plugin to work:
 set hlsearch
 ```
 
-This is all you need to set up. If you run a search command like `/foo`,
-a popup will appear and show you the number of search results like `foo  3 of 7`.
+This is all you need to set up. If you run a search command like `/foo`, a popup
+will appear and show you the number of search results like `foo  3 of 7`.
 
 ### Tips
 
 When you stop highlighting, the popup will be closed automatically.
 
-Highlighting can be stopped with the `nohlsearch` command.
-To run this command quickly, you may want to set up the following map:
+Highlighting can be stopped with the `nohlsearch` command. To run this command
+quickly, you may want to set up the following map:
 
 
 ```vim
 nnoremap <silent> <ESC><ESC> :<C-u>nohlsearch<CR>
 ```
 
-You can also use the nohlsearch feature of
-[is.vim](https://github.com/haya14busa/is.vim) plugin to stop highlighting
-automatically. Please see the link for details.
+You can also use the nohlsearch feature of [is.vim][3] plugin to stop
+highlighting automatically. Please see the link for details.
 
 To be precise, popup will be closed when one of the following occurs after
 stopping highlighting:
@@ -71,15 +69,16 @@ You can customize some features.
 
 ### Position
 
-By default, popup is displayed at top right corner of current window.
-If you want to display the popup, for example, at bottom left corner of current window, use this:
+By default, popup is displayed at top right corner of current window. If you
+want to display the popup, for example, at bottom left corner of current window,
+use this:
 
 ```vim
 let g:hitspop_line   = 'winbot'
 let g:hitspop_column = 'winright'
 ```
 
-![botright](https://user-images.githubusercontent.com/64692680/102915781-b3293380-44c5-11eb-9068-84fe2defe5fd.png)
+![popup at botright][4]
 
 You can also specify other positions. Please see help file for more information.
 
@@ -93,15 +92,24 @@ The popup color can be changed setting the following highlight groups:
 
 Example:
 
-![highlight ex](https://user-images.githubusercontent.com/64692680/102916237-90e3e580-44c6-11eb-803d-6daa577bed98.png)
+![errormsg highlighting][5]
 
 ```vim
 highlight link hitspopErrorMsg ErrorMsg
 ```
 
-📝 I use [iceberg.vim](https://github.com/cocopon/iceberg.vim) for color scheme.
+📝 I use [iceberg.vim][6] for color scheme.
 
 
 ## License
 
 MIT License.
+
+
+<!-- Reference links -->
+[1]: https://user-images.githubusercontent.com/64692680/102915667-81b06800-44c5-11eb-8b53-e37eacc4e67b.gif
+[2]: https://github.com/junegunn/vim-plug
+[3]: https://github.com/haya14busa/is.vim
+[4]: https://user-images.githubusercontent.com/64692680/102915781-b3293380-44c5-11eb-9068-84fe2defe5fd.png
+[5]: https://user-images.githubusercontent.com/64692680/102916237-90e3e580-44c6-11eb-803d-6daa577bed98.png
+[6]: https://github.com/cocopon/iceberg.vim
