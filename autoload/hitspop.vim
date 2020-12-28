@@ -28,6 +28,9 @@ function! s:init() abort "{{{
     \ highlight: s:HL_NORMAL,
     \ callback: {-> s:unlet_popup_id()},
     \ }
+  let s:save_info = []
+  let s:timeout_counter = 0
+  let s:notfound_counter = 0
 endfunction "}}}
 
 
@@ -97,12 +100,28 @@ endfunction "}}}
 
 
 " Return search results
+" NOTE: This function try to return results without running searchcount()
+" because it can be slow even with a small timeout value.
 function! s:get_content() abort "{{{
   if empty(@/)
     return s:format('', s:ERROR_MSGS.empty)
   endif
 
+  let info = [@/, bufnr(), b:changedtick]
+  if info != s:save_info
+    let s:timeout_counter = 0
+    let s:notfound_counter = 0
+    let s:save_info = info
+  endif
+
   const search_pattern = strtrans(@/)
+
+  if s:timeout_counter == 3
+    return s:format(search_pattern, s:ERROR_MSGS.timeout)
+  endif
+  if s:notfound_counter == 1
+    return s:format(search_pattern, s:ERROR_MSGS.notfound)
+  endif
 
   try
     const result = searchcount(#{maxcount: 0, timeout: 10})
@@ -111,17 +130,21 @@ function! s:get_content() abort "{{{
   endtry
 
   if result.incomplete == 1
+    let s:timeout_counter += 1
     return s:format(search_pattern, s:ERROR_MSGS.timeout)
   endif
+  let s:timeout_counter = 0
 
   if result.total == 0
+    let s:notfound_counter += 1
     return s:format(search_pattern, s:ERROR_MSGS.notfound)
-  else
-    return s:format(
-      \ search_pattern,
-      \ printf('%*d of %d', len(result.total), result.current, result.total)
-      \ )
   endif
+  let s:notfound_counter = 0
+
+  return s:format(
+    \ search_pattern,
+    \ printf('%*d of %d', len(result.total), result.current, result.total)
+    \ )
 endfunction "}}}
 
 
