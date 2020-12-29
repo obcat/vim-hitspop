@@ -28,9 +28,13 @@ function! s:init() abort "{{{
     \ highlight: s:HL_NORMAL,
     \ callback: {-> s:unlet_popup_id()},
     \ }
-  let s:save_info = []
+  let s:UP   = 1
+  let s:DOWN = 0
+  let s:prev_search_pattern = ''
+  let s:prev_bufinfo = []
   let s:timeout_counter = 0
-  let s:notfound_counter = 0
+  let s:notfound_flag = s:DOWN
+  let s:invalid_flag  = s:DOWN
 endfunction "}}}
 
 
@@ -104,28 +108,40 @@ endfunction "}}}
 " because it can be slow even with a small timeout value.
 function! s:get_content() abort "{{{
   if empty(@/)
+    " This error message can be seen by executing `:let @/ = ''` when popup is
+    " displayed.
     return s:format('', s:ERROR_MSGS.empty)
   endif
 
-  let info = [@/, bufnr(), b:changedtick]
-  if info != s:save_info
+  let bufinfo = [bufnr(), b:changedtick]
+  if @/ isnot# s:prev_search_pattern
+    let s:invalid_flag    = s:DOWN
     let s:timeout_counter = 0
-    let s:notfound_counter = 0
-    let s:save_info = info
+    let s:notfound_flag   = s:DOWN
+  elseif bufinfo != s:prev_bufinfo
+    let s:timeout_counter = 0
+    let s:notfound_flag   = s:DOWN
   endif
+  let s:prev_search_pattern = @/
+  let s:prev_bufinfo = bufinfo
 
   let search_pattern = strtrans(@/)
 
+  if s:invalid_flag is s:UP
+    return s:format(search_pattern, s:ERROR_MSGS.invalid)
+  endif
   if s:timeout_counter == 3
     return s:format(search_pattern, s:ERROR_MSGS.timeout)
   endif
-  if s:notfound_counter == 1
+  if s:notfound_flag is s:UP
     return s:format(search_pattern, s:ERROR_MSGS.notfound)
   endif
 
   try
     let result = searchcount(#{maxcount: 0, timeout: 10})
-  catch /.*/
+  catch
+    " Error: @/ is invalid search pattern (E54, E65, E944, ...)
+    let s:invalid_flag = s:UP
     return s:format(search_pattern, s:ERROR_MSGS.invalid)
   endtry
 
@@ -136,10 +152,9 @@ function! s:get_content() abort "{{{
   let s:timeout_counter = 0
 
   if result.total == 0
-    let s:notfound_counter += 1
+    let s:notfound_flag = s:UP
     return s:format(search_pattern, s:ERROR_MSGS.notfound)
   endif
-  let s:notfound_counter = 0
 
   return s:format(
     \ search_pattern,
