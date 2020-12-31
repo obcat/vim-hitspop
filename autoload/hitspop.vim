@@ -214,12 +214,12 @@ function! s:get_coord() abort "{{{
 endfunction "}}}
 
 
-function! hitspop#_syntax_args() abort "{{{
-  let args = []
+" This is called from syntax/hitspop.vim
+function! hitspop#define_syntax() abort "{{{
+  let delimiter = '/'
   for msg in values(s:ERROR_MSGS)
-    let args += [[s:HL_ERRORMSG, msg]]
+    exe 'syn match' s:HL_ERRORMSG delimiter . escape(msg, delimiter) . '\s*$' . delimiter
   endfor
-  return args
 endfunction "}}}
 
 
