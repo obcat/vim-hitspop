@@ -196,6 +196,9 @@ endfunction "}}}
 " Return dictionary used to specify popup position
 function! s:get_coord() abort "{{{
   let [line, col] = win_screenpos(0)
+  if !empty(menu_info('WinBar', 'a'))
+    let line += 1
+  endif
   if g:hitspop_line is# 'wintop'
     let pos = 'top'
   elseif g:hitspop_line is# 'winbot'
