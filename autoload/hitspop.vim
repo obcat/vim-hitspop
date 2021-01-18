@@ -63,6 +63,8 @@ function! hitspop#main() abort "{{{
 endfunction "}}}
 
 
+" This function is called on WinLeave.
+" This matters when leaving tab page.
 function! hitspop#clean() abort "{{{
   call s:delete_popup_if_exists()
 endfunction "}}}
