@@ -14,6 +14,7 @@ function! s:register_autocmds() abort
   augroup hitspop-autocmds
     autocmd!
     autocmd CursorMoved,CursorMovedI,CursorHold,WinEnter * call hitspop#main()
+    " autocmd WinLeave * call hitspop#clean()
   augroup END
 endfunction
 
