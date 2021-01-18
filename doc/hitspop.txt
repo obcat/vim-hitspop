@@ -1,112 +1,113 @@
-*hitspop.txt*  Popup the number of search results.
+*hitspop.txt*	Popup the number of search results
 
-                        _,  ___ __       ____
-                       / / / (_) /______/ __ \____  ____
-                      / /_/ / / __/ ___/ /_/ / __ \/ __ \
-                     / __  / / /_(__  ) ____/ /_/ / /_/ /
-                    /_/ /_/_/\__/____/_/    \____/ .___/
-                                                /_/
+		    __  ___ __       ____ `
+		   / / / (_) /______/ __ \____  ____ `
+		  / /_/ / / __/ ___/ /_/ / __ \/ __ \ `
+		 / __  / / /_(__  ) ____/ /_/ / /_/ / `
+		/_/ /_/_/\__/____/_/    \____/ .___/ `
+					    /_/ `
 
 
 ==============================================================================
 CONTENTS
 
-    Intro .................................... |hitspop-intro|
-    Commands ................................. |hitspop-commands|
-    Highlights ............................... |hitspop-highlights|
-    Options .................................. |hitspop-options|
-    About .................................... |hitspop-about|
+	Intro .................................... |hitspop-intro|
+	Commands ................................. |hitspop-commands|
+	Highlights ............................... |hitspop-highlights|
+	Options .................................. |hitspop-options|
+	About .................................... |hitspop-about|
 
 
 ==============================================================================
-INTRO                                                          *hitspop-intro*
+INTRO							*hitspop-intro*
 
 *HitsPop* is a Vim plugin for displaying the results of a search command in a
 popup window.
 
 
 ==============================================================================
-COMMANDS                                                    *hitspop-commands*
+COMMANDS						*hitspop-commands*
 
 *:HitsPopEnable*
-    Enable |HitsPop|.  This is used to re-enable |HitsPop| that was disabled
-    with |:HitsPopDisable|.
+	Enable |HitsPop|.  This is used to re-enable |HitsPop| that was
+	disabled with |:HitsPopDisable|.
 
 *:HitsPopDisable*
-    Disable |HitsPop|.
+	Disable |HitsPop|.
 
 
 ==============================================================================
-HIGHLIGHTS                                                *hitspop-highlights*
+HIGHLIGHTS						*hitspop-highlights*
 
-hitspopNormal   (default: links to |hl-Pmenu|)          *hl-hitspopNormal*
-    Highlight group for normal text in |HitsPop| popup.
+hitspopNormal	(default: links to |hl-Pmenu|)		*hl-hitspopNormal*
+	Highlight group for normal text in |HitsPop| popup.
 
-hitspopErrorMsg (default: links to |hl-Pmenu|)          *hl-hitspopErrorMsg*
-    Highlight group for error messages in |HitsPop| popup.
+hitspopErrorMsg	(default: links to |hl-Pmenu|)		*hl-hitspopErrorMsg*
+	Highlight group for error messages in |HitsPop| popup.
 
 
 ==============================================================================
-OPTIONS                                                      *hitspop-options*
+OPTIONS							*hitspop-options*
 
-*g:hitspop_line*        string  (default: "wintop")
-*g:hitspop_line_mod*    number  (default: 0)
-*g:hitspop_column*      string  (default: "winright")
-*g:hitspop_column_mod*  number  (default: 0)
-    Specify |HitsPop| popup position.  By default, the position is top right
-    corner of current window.  Accepted values of the line/column options are:
+*g:hitspop_line*	string	(default: "wintop")
+*g:hitspop_line_mod*	number	(default: 0)
+*g:hitspop_column*	string	(default: "winright")
+*g:hitspop_column_mod*	number	(default: 0)
+	Specify |HitsPop| popup position.  By default, the position is top
+	right corner of current window.  Accepted values of the line/column
+	options are:
 
-    |g:hitspop_line|
-        "wintop"    top line of current window
-        "winbot"    bottom line of current window
-    |g:hitspop_column|
-        "winleft"   leftmost column of current window
-        "winright"  rightmost column of current window
+	g:hitspop_line ~
+		"wintop"	top line of current window
+		"winbot"	bottom line of current window
+	g:hitspop_column ~
+		"winleft"	leftmost column of current window
+		"winright"	rightmost column of current window
 >
-                                "winright"
-                                    |
-                -7 -6 -5 -4 -3 -2 -1| 0
-              --+-------------------+--->   "wintop"
-                |                   | 1
-                |                   | 2
-                |                   | 3
-                |      window       | 4     (default)
-                |                   | 5
-                |                   | 6
-                |                   | 7
-                +-------------------| 8
-                                    | 9
-                                    v
+				winright"
+				    |
+		-7 -6 -5 -4 -3 -2 -1| 0
+	      --+-------------------+--->	"wintop"
+		|                   | 1
+		|                   | 2
+		|                   | 3
+		|      window       | 4		(default)
+		|                   | 5
+		|                   | 6
+		|                   | 7
+		+-------------------| 8
+				    | 9
+				    v
 <
-    For example, to place popup 2 columns off to the left from bottom right
-    corner of current window, use this:
+	For example, to place popup 2 columns off to the left from bottom
+	right corner of current window, use this:
 >
-        let g:hitspop_line       = 'winbot'
-        let g:hitspop_line_mod   = 0
-        let g:hitspop_column     = 'winright'
-        let g:hitspop_column_mod = -2
+		let g:hitspop_line       = 'winbot'
+		let g:hitspop_line_mod   = 0
+		let g:hitspop_column     = 'winright'
+		let g:hitspop_column_mod = -2
 <
 
 
-*g:hitspop_zindex*      number  (default: 50)
-    Priority for |HitsPop| popup.  Minumum value is 1, maximum value is 32000.
-    If this value is less than the zindex of other popup, then |HitsPop| popup
-    will be covered by that popup, and vice versa.
+*g:hitspop_zindex*	number	(default: 50)
+	Priority for |HitsPop| popup.  Minumum value is 1, maximum value is
+	32000.  If this value is less than the zindex of other popup, then
+	|HitsPop| popup will be covered by that popup, and vice versa.
 
 
-*g:hitspop_minwidth*    number  (default: 20)
-*g:hitspop_maxwidth*    number  (default: 30)
-    Minimum and Maximum width of |HitsPop| popup.
-
-
-==============================================================================
-ABOUT                                                          *hitspop-about*
-
-|HitsPop| is developed by obcat and licensed under the MIT License.
-Visit the project page for the latest version:
-
-    https://github.com/obcat/vim-hitspop
+*g:hitspop_minwidth*	number	(default: 20)
+*g:hitspop_maxwidth*	number	(default: 30)
+	Minimum and maximum width of |HitsPop| popup.
 
 
 ==============================================================================
-vim:ft=help:norl:ts=4:sw=4:tw=78:
+ABOUT							*hitspop-about*
+
+|HitsPop| is developed by obcat and licensed under the MIT License.  Visit the
+project page for the latest version:
+
+	https://github.com/obcat/vim-hitspop
+
+
+==============================================================================
+ vim:tw=78:ts=8:noet:ft=help:norl:
