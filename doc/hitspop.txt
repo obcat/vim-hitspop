@@ -100,6 +100,18 @@ OPTIONS							*hitspop-options*
 	Minimum and maximum width of |HitsPop| popup.
 
 
+*b:hitspop_blocked*	boolean	(default: undefined)
+	Set 1 to block |HitsPop| in a specific buffer. For example, to block
+	in |netrw| buffers and terminal buffers, use this:
+>
+		augroup my-hitspop
+		  autocmd!
+		  autocmd FileType netrw let b:hitspop_blocked = 1
+		  autocmd TerminalWinOpen * let b:hitspop_blocked = 1
+		augroup END
+<
+
+
 ==============================================================================
 ABOUT							*hitspop-about*
 

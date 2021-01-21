@@ -42,7 +42,7 @@ call s:init()
 
 " This function is called on CursorMoved, CursorMovedI, CursorHold, and WinEnter
 function! hitspop#main() abort "{{{
-  if !v:hlsearch
+  if !v:hlsearch || get(b:, 'hitspop_blocked', 0)
     call s:delete_popup_if_exists()
     return
   endif
