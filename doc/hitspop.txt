@@ -11,29 +11,18 @@
 ==============================================================================
 CONTENTS
 
-	Intro .................................... |hitspop-intro|
-	Commands ................................. |hitspop-commands|
-	Highlights ............................... |hitspop-highlights|
-	Options .................................. |hitspop-options|
-	About .................................... |hitspop-about|
+	INTRO .................................... |hitspop-intro|
+	HIGHLIGHTS ............................... |hitspop-highlights|
+	OPTIONS .................................. |hitspop-options|
+	COMMANDS ................................. |hitspop-commands|
+	ABOUT .................................... |hitspop-about|
 
 
 ==============================================================================
 INTRO							*hitspop-intro*
 
 *HitsPop* is a Vim plugin for displaying the results of a search command in a
-popup window.
-
-
-==============================================================================
-COMMANDS						*hitspop-commands*
-
-*:HitsPopEnable*
-	Enable |HitsPop|.  This is used to re-enable |HitsPop| that was
-	disabled with |:HitsPopDisable|.
-
-*:HitsPopDisable*
-	Disable |HitsPop|.
+tiny popup window.
 
 
 ==============================================================================
@@ -49,13 +38,23 @@ hitspopErrorMsg	(default: links to |hl-Pmenu|)		*hl-hitspopErrorMsg*
 ==============================================================================
 OPTIONS							*hitspop-options*
 
+'hlsearch'		boolean	(default: off)
+'updatetime'		number	(default: 4000)
+	These are Vim's |options|.  The |hlsearch| option must be turned on for
+	this plugin to work.  The |updatetime| option determines smoothness of
+	this plugin.  I recommend setting this to 100. >
+>
+		set hlsearch
+		set updatetime=100
+<
+
+
 *g:hitspop_line*	string	(default: "wintop")
 *g:hitspop_line_mod*	number	(default: 0)
 *g:hitspop_column*	string	(default: "winright")
 *g:hitspop_column_mod*	number	(default: 0)
-	Specify |HitsPop| popup position.  By default, the position is top
-	right corner of current window.  Accepted values of the line/column
-	options are:
+	Specify |HitsPop| popup position.  The default position is top right
+	corner of current window.  Accepted values of the string options are:
 
 	g:hitspop_line ~
 		"wintop"	top line of current window
@@ -64,7 +63,7 @@ OPTIONS							*hitspop-options*
 		"winleft"	leftmost column of current window
 		"winright"	rightmost column of current window
 >
-				winright"
+				"winright"
 				    |
 		-7 -6 -5 -4 -3 -2 -1| 0
 	      --+-------------------+--->	"wintop"
@@ -89,27 +88,46 @@ OPTIONS							*hitspop-options*
 <
 
 
-*g:hitspop_zindex*	number	(default: 50)
-	Priority for |HitsPop| popup.  Minumum value is 1, maximum value is
-	32000.  If this value is less than the zindex of other popup, then
-	|HitsPop| popup will be covered by that popup, and vice versa.
-
-
 *g:hitspop_minwidth*	number	(default: 20)
 *g:hitspop_maxwidth*	number	(default: 30)
 	Minimum and maximum width of |HitsPop| popup.
 
 
-*b:hitspop_blocked*	boolean	(default: undefined)
-	Set 1 to block |HitsPop| in a specific buffer. For example, to block
-	in |netrw| buffers and terminal buffers, use this:
+*g:hitspop_zindex*	number	(default: 50)
+	Priority for |HitsPop| popup.  Minumum value is 1, maximum value is
+	32000.  If this value is less than the zindex of other popup, then
+	|HitsPop| popup will go under it, and vice versa.
+
+
+*g:hitspop_disable*	boolean	(default: undefined)
+	Set 1 to disable |HitsPop| for all buffers.  This can be overriden
+	with |b:hitspop_disable| on a per-buffer basis.
+
+
+*b:hitspop_disable*	boolean	(default: undefined)
+	Set 1 to disable |HitsPop| for a specific buffer.  This overrides
+	|g:hitspop_disable|.  For example, to disable |HitsPop| for |netrw|
+	buffers, use this:
 >
 		augroup my-hitspop
 		  autocmd!
-		  autocmd FileType netrw let b:hitspop_blocked = 1
-		  autocmd TerminalWinOpen * let b:hitspop_blocked = 1
+		  autocmd FileType netrw let b:hitspop_disable = 1
 		augroup END
 <
+
+
+*b:hitspop_blocked*
+	DEPRECATED: Use |b:hitspop_disable| instead.
+
+
+==============================================================================
+COMMANDS						*hitspop-commands*
+
+*:HitsPopEnable*
+	DEPRECATED: Set |g:hitspop_disable| to 0 or remove it instead.
+
+*:HitsPopDisable*
+	DEPRECATED: Set |g:hitspop_disable| to 1 instead.
 
 
 ==============================================================================
