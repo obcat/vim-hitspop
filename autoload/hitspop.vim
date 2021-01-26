@@ -72,6 +72,16 @@ function! hitspop#clean() abort "{{{
 endfunction "}}}
 
 
+" This function is called on TerminalOpen.
+function! hitspop#define_autocmds_for_terminal_buffer(bufnr) abort "{{{
+  exe printf('augroup hitspop-autocmds-for-terminal-buffer-%d', a:bufnr)
+    autocmd!
+    " Don't show popup in terminal-job mode.
+    exe printf('autocmd SafeState <buffer=%d> call s:delete_popup_if_exists_in_terminal_job_mode()', a:bufnr)
+  augroup END
+endfunction "}}}
+
+
 function! s:create_popup(coord) abort "{{{
   return popup_create(
     \ s:get_content(),
@@ -79,13 +89,17 @@ function! s:create_popup(coord) abort "{{{
     \ )
 endfunction "}}}
 
-
 function! s:delete_popup_if_exists() abort "{{{
   if s:popup_exists()
     call popup_close(s:popup_id)
   endif
 endfunction "}}}
 
+function! s:delete_popup_if_exists_in_terminal_job_mode() abort "{{{
+  if mode() is# 't'
+    call s:delete_popup_if_exists()
+  endif
+endfunction "}}}
 
 function! s:move_popup(line, col) abort "{{{
   call popup_move(s:popup_id, #{line: a:line, col: a:col})
