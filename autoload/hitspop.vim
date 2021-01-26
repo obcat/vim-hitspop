@@ -56,6 +56,11 @@ function! hitspop#main() abort "{{{
     call setbufvar(winbufnr(s:popup_id), '&filetype', 'hitspop')
   else
     let opts = popup_getoptions(s:popup_id)
+    if empty(opts)
+      " It is assumed that the popup callback was not called due to some accident, so call it.
+      call s:unlet_popup_id()
+      return
+    endif
     if [opts.line, opts.col] != [coord.line, coord.col]
       call s:move_popup(coord.line, coord.col)
     endif
