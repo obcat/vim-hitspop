@@ -7,7 +7,7 @@ Popup the number of search results.
 
 ## Installation
 
-Requires Vim 8.2.0896 or later.
+Requires Vim 8.2.0896 or later. Neovim is not supported.
 
 If you use [vim-plug][2], then add the following line to your vimrc:
 
