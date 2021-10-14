@@ -10,6 +10,7 @@ function! s:init() abort "{{{
   let g:hitspop_zindex = get(g:, 'hitspop_zindex', 50)
   let g:hitspop_minwidth = get(g:, 'hitspop_minwidth', 20)
   let g:hitspop_maxwidth = get(g:, 'hitspop_maxwidth', 30)
+  let g:hitspop_timeout = get(g:, 'hitspop_timeout', 10)
   let s:HL_NORMAL   = 'hitspopNormal'
   let s:HL_ERRORMSG = 'hitspopErrorMsg'
   exe 'hi default link' s:HL_NORMAL 'Pmenu'
@@ -161,7 +162,7 @@ function! s:get_content() abort "{{{
   endif
 
   try
-    let result = searchcount(#{maxcount: 0, timeout: 10})
+    let result = searchcount(#{maxcount: 0, timeout: g:hitspop_timeout})
   catch
     " Error: @/ is invalid search pattern (E54, E65, E944, ...)
     let s:invalid_flag = s:UP

@@ -98,6 +98,9 @@ OPTIONS							*hitspop-options*
 	32000.  If this value is less than the zindex of other popup, then
 	|HitsPop| popup will go under it, and vice versa.
 
+*g:hitspop_timeout*	number	(default: 10)
+	Timeout milliseconds for computing the number of search results.  0 or
+	negative number means no timeout.
 
 *g:hitspop_disable*	boolean	(default: undefined)
 	Set 1 to disable |HitsPop| for all buffers.  This can be overriden
