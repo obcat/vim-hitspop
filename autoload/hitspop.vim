@@ -18,7 +18,6 @@ function! s:init() abort "{{{
 
   let s:ERROR_MSGS = #{
     \ invalid:  'Invalid',
-    \ empty:    'Empty',
     \ timeout:  'Timed out',
     \ notfound: 'No results',
     \ }
@@ -46,6 +45,7 @@ function! hitspop#main() abort "{{{
   if !v:hlsearch || get(b:, 'hitspop_disable', 0)
     \            || get(b:, 'hitspop_blocked', 0)
     \            || get(g:, 'hitspop_disable', 0)
+    \            || empty(@/)
     call s:delete_popup_if_exists()
     return
   endif
@@ -131,12 +131,6 @@ endfunction "}}}
 " NOTE: This function try to return results without running searchcount()
 " because it can be slow even with a small timeout value.
 function! s:get_content() abort "{{{
-  if empty(@/)
-    " This error message can be seen by executing `:let @/ = ''` when popup is
-    " displayed.
-    return s:format('', s:ERROR_MSGS.empty)
-  endif
-
   let bufinfo = [bufnr(), b:changedtick]
   if @/ isnot# s:prev_search_pattern
     let s:invalid_flag    = s:DOWN
