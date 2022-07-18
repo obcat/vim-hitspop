@@ -12,7 +12,7 @@ endif
 
 augroup hitspop-autocmds
   autocmd!
-  autocmd CursorMoved,CursorMovedI,CursorHold,WinEnter * call hitspop#main()
+  autocmd CursorMoved,CursorMovedI,CursorHold,WinEnter,VimResized * call hitspop#main()
   autocmd WinLeave * call hitspop#clean()
   autocmd TerminalOpen * call hitspop#define_autocmds_for_terminal_buffer(expand('<abuf>'))
 augroup END
